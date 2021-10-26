@@ -8,11 +8,13 @@ namespace BTL_QLKTX.Models
         {
         }
         public virtual DbSet<Person> Persons { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Person>()
-            .Property(e => e.PersonId)
-            .IsUnicode(false);
+                .Property(e => e.PersonID)
+                .IsUnicode(false);
         }
     }
 }

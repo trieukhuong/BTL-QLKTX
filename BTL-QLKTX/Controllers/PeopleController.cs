@@ -15,6 +15,7 @@ namespace BTL_QLKTX.Controllers
     {
         private QLKTXDbContext db = new QLKTXDbContext();
         private StringProcess strPro = new StringProcess();
+        private string personKey;
 
         // GET: People
         public ActionResult Index()
@@ -41,15 +42,17 @@ namespace BTL_QLKTX.Controllers
         public ActionResult Create()
         {
             string personkey = "";
-            var personID = db.Persons.ToList().OrderByDescending(m => m.PersonID).FirstOrDefault().PersonID;
-            if (personID !=null)
+            var model = db.Persons.ToList();
+            if (model.Count == 0)
             {
-                personkey = "PER001";
+                personKey = "PER001";
             }
             else
             {
-                personkey = (string)personID;
+                var personID = model.OrderByDescending(m => m.PersonID).FirstOrDefault().PersonID;
+                personKey = strPro.AutoGenerateKey(personID);
             }
+            ViewBag.PerID = personKey;
             return View();
         }
 
@@ -58,7 +61,7 @@ namespace BTL_QLKTX.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PersonId,PesonName")] Person person)
+        public ActionResult Create([Bind(Include = "PersonName,PersonID")] Person person)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +93,7 @@ namespace BTL_QLKTX.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PersonId,PesonName")] Person person)
+        public ActionResult Edit([Bind(Include = "PersonName,PersonID")] Person person)
         {
             if (ModelState.IsValid)
             {
