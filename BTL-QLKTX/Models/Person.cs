@@ -11,6 +11,7 @@ namespace BTL_QLKTX.Models
     {
         [key]
         public string PersonId { get; set; }
+        public object PersonID { get; internal set; }
         public string PesonName { get; set; }
     }
 }

@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BTL_QLKTX.Models;
+using BTL_QLKTX.Models.Process;
 
 namespace BTL_QLKTX.Controllers
 {
     public class PeopleController : Controller
     {
         private QLKTXDbContext db = new QLKTXDbContext();
+        private StringProcess strPro = new StringProcess();
 
         // GET: People
         public ActionResult Index()
@@ -38,6 +40,16 @@ namespace BTL_QLKTX.Controllers
         // GET: People/Create
         public ActionResult Create()
         {
+            string personkey = "";
+            var personID = db.Persons.ToList().OrderByDescending(m => m.PersonID).FirstOrDefault().PersonID;
+            if (personID !=null)
+            {
+                personkey = "PER001";
+            }
+            else
+            {
+                personkey = (string)personID;
+            }
             return View();
         }
 
